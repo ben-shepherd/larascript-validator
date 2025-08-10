@@ -1,195 +1,251 @@
-# Larascript Bundle Template
+# Larascript Validator Bundle
 
-This is a template repository for creating Larascript bundles. Follow the steps below to create your own bundle.
+A powerful, flexible validation library for the Larascript Framework with support for custom rules, nested data validation, and comprehensive error handling.
 
-## Creating a New Bundle
+## Features
 
-### 1. Fork or Clone the Repository
+- **Type-safe validation** with TypeScript support
+- **Nested data validation** using dot notation
+- **Extensible rule system** with 20+ built-in rules
+- **Custom error messages** for all validation rules
+- **Async validation** support
+- **Comprehensive error handling** with detailed feedback
 
-**Option A: Fork the repository**
-- Go to the original repository on GitHub
-- Click the "Fork" button to create your own copy
-
-**Option B: Clone the repository**
-```bash
-git clone https://github.com/ben-shepherd/larascript-forkable-bundle-original.git
-```
-
-### 2. Rename the Directory
-
-Change the cloned directory name to match your bundle name:
+## Installation
 
 ```bash
-# If you cloned the repo
-mv larascript-forkable-bundle-original larascript-your-bundle-name
-
-# Example:
-mv larascript-forkable-bundle-original larascript-components-bundle
+npm install @ben-shepherd/larascript-validator-bundle
 ```
 
-### 3. Update package.json
+## Quick Start
 
-Edit the `package.json` file and update the following fields:
+```typescript
+import { Validator, RequiredRule, StringRule, EmailRule } from '@ben-shepherd/larascript-validator-bundle';
 
-```json
-{
-  "name": "@your-username/larascript-your-bundle-name",
-  "description": "Your bundle description here",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/your-username/larascript-your-bundle-name"
+// Create a validator with rules
+const validator = Validator.make({
+  name: [new RequiredRule(), new StringRule()],
+  email: [new RequiredRule(), new EmailRule()],
+  age: [new RequiredRule(), new NumberRule()],
+});
+
+// Validate data
+const result = await validator.validate({
+  name: "John Doe",
+  email: "john@example.com",
+  age: 30
+});
+
+if (result.passes()) {
+  console.log('Validation passed:', result.validated());
+} else {
+  console.log('Validation failed:', result.errors());
+}
+```
+
+## Basic Usage
+
+### Creating a Validator
+
+```typescript
+// Using the static make method (recommended)
+const validator = Validator.make(rules, customMessages);
+
+// Using the constructor
+const validator = new Validator(rules, customMessages);
+```
+
+### Defining Validation Rules
+
+```typescript
+const rules = {
+  // Simple field validation
+  name: [new RequiredRule(), new StringRule()],
+  email: [new RequiredRule(), new EmailRule()],
+  
+  // Nested object validation
+  'user.name': [new RequiredRule(), new StringRule()],
+  'user.email': [new RequiredRule(), new EmailRule()],
+  
+  // Array validation
+  'users.*.name': [new RequiredRule(), new StringRule()],
+  'users.*.age': [new RequiredRule(), new NumberRule()],
+};
+```
+
+### Custom Error Messages
+
+```typescript
+const messages = {
+  'name.required': 'The name field is required.',
+  'email.email': 'Please provide a valid email address.',
+  'age.number': 'Age must be a number.',
+};
+
+const validator = Validator.make(rules, messages);
+```
+
+## Available Validation Rules
+
+### Basic Rules
+- `RequiredRule` - Field must be present and not empty
+- `StringRule` - Field must be a string
+- `NumberRule` - Field must be a number
+- `BooleanRule` - Field must be a boolean
+- `ArrayRule` - Field must be an array
+- `ObjectRule` - Field must be an object
+
+### Data Type Rules
+- `DateRule` - Field must be a valid date
+- `EmailRule` - Field must be a valid email address
+- `UuidRule` - Field must be a valid UUID
+- `JsonRule` - Field must be valid JSON
+- `NumericRule` - Field must be numeric (string or number)
+
+### Comparison Rules
+- `MinRule` - Field must be greater than or equal to minimum value
+- `MaxRule` - Field must be less than or equal to maximum value
+- `SizeRule` - Field must have exact size (length, count, etc.)
+- `EqualsRule` - Field must equal specified value
+- `SameRule` - Field must match another field's value
+
+### Conditional Rules
+- `AcceptedRule` - Field must be accepted (true, "true", 1, "1", "yes", "on")
+- `AcceptedIfRule` - Field must be accepted if condition is met
+- `NullableRule` - Field can be null or undefined
+- `AfterDateRule` - Field must be a date after specified date
+
+### Special Rules
+- `EnumRule` - Field must be one of specified values
+- `RegexRule` - Field must match regular expression pattern
+- `CustomRule` - Custom validation logic
+
+## Nested Data Validation
+
+The validator supports deep nested object validation using dot notation:
+
+```typescript
+const data = {
+  user: {
+    profile: {
+      name: "John Doe",
+      contact: {
+        email: "john@example.com",
+        phone: "123-456-7890"
+      }
+    }
+  }
+};
+
+const rules = {
+  'user.profile.name': [new RequiredRule(), new StringRule()],
+  'user.profile.contact.email': [new RequiredRule(), new EmailRule()],
+  'user.profile.contact.phone': [new RequiredRule(), new StringRule()],
+};
+```
+
+## Array Validation
+
+Validate arrays and their elements:
+
+```typescript
+const data = {
+  users: [
+    { name: "John", age: 30 },
+    { name: "Jane", age: 25 }
+  ]
+};
+
+const rules = {
+  'users': [new RequiredRule(), new ArrayRule()],
+  'users.*.name': [new RequiredRule(), new StringRule()],
+  'users.*.age': [new RequiredRule(), new NumberRule()],
+};
+```
+
+## Validation Results
+
+The validator returns a result object with useful methods:
+
+```typescript
+const result = await validator.validate(data);
+
+// Check if validation passed
+if (result.passes()) {
+  // Get validated data (only fields that passed validation)
+  const validData = result.validated();
+}
+
+// Check if validation failed
+if (result.fails()) {
+  // Get all validation errors
+  const errors = result.errors();
+  // Format: { fieldName: ['error message 1', 'error message 2'] }
+}
+```
+
+## Custom Validation Rules
+
+Create custom validation rules by extending the `AbstractRule` class:
+
+```typescript
+import { AbstractRule } from '@ben-shepherd/larascript-validator-bundle';
+
+class CustomRule extends AbstractRule {
+  async validate(value: unknown): Promise<boolean> {
+    // Your custom validation logic
+    return true; // or false
+  }
+
+  getMessage(): string {
+    return 'Custom validation failed';
   }
 }
 ```
 
-**Required changes:**
-- `name`: Change from "PLACEHOLDER" to your bundle name (e.g., "larascript-components-bundle")
-- `description`: Replace "PLACEHOLDER DESCRIPTION" with a meaningful description
-- `repository.url`: Update to point to your new repository URL
+## Error Handling
 
-### 4. Set Git Remote Origin URL
-
-Update your git remote to point to your new repository:
-
-```bash
-git remote set-url origin https://github.com/your-username/larascript-your-bundle-name.git
-```
-
-### 5. Update Repository Settings
-
-If you forked the repository:
-1. Go to your forked repository on GitHub
-2. Update the repository name to match your bundle name
-3. Update the repository description
-
-### 6. Initialize Your Bundle
-
-```bash
-# Install dependencies
-npm install
-
-# Run tests to ensure everything works
-npm test
-
-# Build the project
-npm run build
-```
-
-### 7. Customize Your Bundle
-
-- Add your bundle-specific code to `src/index.ts`
-- Update tests in the `src/tests/` directory
-- Modify configuration files as needed (`tsconfig.json`, `jest.config.js`, etc.)
-
-## Important Notes
-
-### Export Guidelines
-
-**No Default Exports**: All exports should be named exports. Avoid using `export default`.
-
-**Index Files**: Create an `index.ts` file in every directory you create and export all files from that directory.
-
-**Example Structure:**
-```
-src/
-├── index.ts                 # Main entry point
-├── components/
-│   ├── index.ts            # Export all components
-│   ├── Button.ts
-│   └── Modal.ts
-├── utils/
-│   ├── index.ts            # Export all utilities
-│   ├── helpers.ts
-│   └── validators.ts
-└── types/
-    ├── index.ts            # Export all types
-    └── common.ts
-```
-
-**Example index.ts files:**
+The validator provides comprehensive error handling:
 
 ```typescript
-// src/components/index.ts
-export * from './Button';
-export * from './Modal';
-
-// src/utils/index.ts
-export * from './helpers';
-export * from './validators';
-
-// src/types/index.ts
-export * from './common';
-
-// src/index.ts (main entry)
-export * from './components';
-export * from './utils';
-export * from './types';
+try {
+  const result = await validator.validate(data);
+  // Handle result
+} catch (error) {
+  if (error instanceof ValidatorException) {
+    console.error('Validation error:', error.message);
+  }
+}
 ```
 
-### 8. Update This README
+## API Reference
 
-Replace this content with documentation specific to your bundle:
-- What the bundle does
-- How to install and use it
-- Examples and API documentation
-- Contributing guidelines
+### Validator Class
 
-## Development Workflow
+- `Validator.make(rules, messages?)` - Create a new validator instance
+- `validate(data)` - Validate data against rules
+- `passes()` - Check if validation passed
+- `fails()` - Check if validation failed
+- `errors()` - Get validation errors
+- `validated()` - Get validated data
+- `setRuleContext(context)` - Set additional context for rules
 
-This template includes several helpful scripts:
+### Validation Result
 
-- `npm run build` - Build the TypeScript code
-- `npm test` - Run tests
-- `npm run lint` - Check code style
-- `npm run lint:fix` - Fix code style issues
-- `npm run format` - Format code with Prettier
+- `passes()` - Returns true if validation passed
+- `fails()` - Returns true if validation failed
+- `errors()` - Returns validation errors object
+- `validated()` - Returns successfully validated data
 
-### Setting up Lefthook
+## Contributing
 
-This project uses Lefthook for pre-commit hooks. To set it up:
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Run the test suite
+6. Submit a pull request
 
-```bash
-# Install lefthook locally (recommended)
-npx lefthook install
+## License
 
-# If the above doesn't work, install lefthook globally and try again
-npm install -g lefthook
-lefthook install
-```
-
-Lefthook will automatically run linting, formatting, and tests before each commit to ensure code quality.
-
-### Upstream Repository Management
-
-If you've forked this repository and want to keep your fork in sync with the original repository, use these commands:
-
-- `npm run upstream:setup` - Sets up the upstream remote pointing to the original repository
-- `npm run upstream:fetch` - Fetches the latest changes from the upstream repository
-- `npm run upstream:merge` - Fetches and merges the latest changes from upstream into your current branch
-- `npm run upstream:rebase` - Fetches and rebases your current branch on top of the latest upstream changes
-
-**Note**: The `upstream:setup` command configures the upstream remote to prevent accidental pushes to the original repository. You cannot push to the upstream repository - it's configured as read-only.
-
-## Publishing
-
-When ready to publish:
-
-1. Update the version in `package.json`
-2. Commit your changes
-3. Create a git tag for the version
-4. Push to GitHub
-5. The package will be published to the GitHub Package Registry
-
-## Template Features
-
-- TypeScript configuration
-- Jest testing setup
-- ESLint and Prettier for code quality
-- Commit message linting with conventional commits
-- GitHub Actions ready
-- Branch name validation
-- Pre-commit hooks with Lefthook
-
-## Support
-
-For questions about this template or Larascript bundles in general, please refer to the main Larascript documentation or create an issue in the original repository.
+ISC License
