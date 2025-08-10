@@ -2,35 +2,31 @@ import AbstractRule from "../abstract/AbstractRule";
 import { IRule, IRuleError } from "../interfaces/IRule";
 
 class NumericRule extends AbstractRule<{}> implements IRule {
+  protected name: string = "numeric";
 
-    protected name: string = 'numeric';
+  protected errorTemplate: string = "The :attribute field must be numeric.";
 
-    protected errorTemplate: string = 'The :attribute field must be numeric.';
-    
-    public async test(): Promise<boolean> {
-        if(this.dataUndefinedOrNull()) return false
+  public async test(): Promise<boolean> {
+    if (this.dataUndefinedOrNull()) return false;
 
-        // Allow both numbers and numeric strings
-        if (typeof this.getAttributeData() === 'number') {
-            return !isNaN(this.getAttributeData() as number);
-        }
-
-        if (typeof this.getAttributeData() === 'string') {
-            // Check if string is numeric (including decimals and negative numbers)
-            return /^-?\d*\.?\d+$/.test(this.getAttributeData() as string);
-        }
-
-        return false;
+    // Allow both numbers and numeric strings
+    if (typeof this.getAttributeData() === "number") {
+      return !isNaN(this.getAttributeData() as number);
     }
 
-    getError(): IRuleError {
-        return {
-            [this.getDotNotationPath()]: [
-                this.formatErrorMessage({})
-            ]
-        };
+    if (typeof this.getAttributeData() === "string") {
+      // Check if string is numeric (including decimals and negative numbers)
+      return /^-?\d*\.?\d+$/.test(this.getAttributeData() as string);
     }
 
+    return false;
+  }
+
+  getError(): IRuleError {
+    return {
+      [this.getDotNotationPath()]: [this.formatErrorMessage({})],
+    };
+  }
 }
 
-export default NumericRule; 
+export default NumericRule;

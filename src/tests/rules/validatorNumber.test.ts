@@ -1,33 +1,30 @@
-/* eslint-disable no-undef */
-import IsNumber from '@/validator/rules/NumberRule';
-import Validator from '@/validator/service/Validator';
-import { describe } from '@jest/globals';
+ 
+import IsNumber from "@/validator/rules/NumberRule";
+import Validator from "@/validator/service/Validator";
+import { describe } from "@jest/globals";
 
-describe('test validation', () => {
+describe("test validation", () => {
+  test("isNumber, passes", async () => {
+    const validator = Validator.make({
+      numberField: [new IsNumber()],
+    });
 
-    test('isNumber, passes', async () => {
-        const validator = Validator.make({
-            numberField: [new IsNumber()]
-        })
+    const result = await validator.validate({
+      numberField: 123,
+    });
 
-        const result = await validator.validate({
-            numberField: 123
-        })
+    expect(result.passes()).toBe(true);
+  });
 
+  test("isNumber, fails with non-number value", async () => {
+    const validator = Validator.make({
+      numberField: [new IsNumber()],
+    });
 
-        expect(result.passes()).toBe(true)
-    })
+    const result = await validator.validate({
+      objectField: "non-number",
+    });
 
-    test('isNumber, fails with non-number value', async () => {
-        const validator = Validator.make({
-            numberField: [new IsNumber()]
-        })
-
-        const result = await validator.validate({
-            objectField: 'non-number'
-        })
-
-        expect(result.passes()).toBe(false)
-    })
-
+    expect(result.passes()).toBe(false);
+  });
 });

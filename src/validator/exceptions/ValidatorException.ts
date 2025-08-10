@@ -1,9 +1,7 @@
 export class ValidatorException extends Error {
-
-    constructor(message: string = 'Validation failed') {
-        super(message)
-    }
-
+  constructor(message: string = "Validation failed") {
+    super(message);
+  }
 }
 
-export default ValidatorException
+export default ValidatorException;
