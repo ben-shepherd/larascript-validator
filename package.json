@@ -1,6 +1,6 @@
 {
   "name": "@ben-shepherd/larascript-validator-bundle",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Validator bundle for Larascript Framework",
   "repository": {
     "type": "git",
