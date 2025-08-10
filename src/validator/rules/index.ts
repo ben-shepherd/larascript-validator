@@ -18,7 +18,6 @@ export { default as ObjectRule } from './ObjectRule';
 export { default as RegexRule } from './RegexRule';
 export { default as RequiredRule } from './RequiredRule';
 export { default as SameRule } from './SameRule';
-export { default as SingleFileRule } from './SingleFileRule';
 export { default as SizeRule } from './SizeRule';
 export { default as StringRule } from './StringRule';
 export { default as UuidRule } from './UuidRule';

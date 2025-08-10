@@ -1,13 +1,13 @@
-/* eslint-disable no-undef */
-import IsObject from '@/validator/rules/ObjectRule';
+ 
+import ObjectRule from '@/validator/rules/ObjectRule';
 import Validator from '@/validator/service/Validator';
 import { describe } from '@jest/globals';
 
 describe('test validation', () => {
 
-    test('isObject, passes', async () => {
+    test('ObjectRule, passes', async () => {
         const validator = Validator.make({
-            objectField: [new IsObject()]
+            objectField: [new ObjectRule()]
         })
 
         const result = await validator.validate({
@@ -17,9 +17,9 @@ describe('test validation', () => {
         expect(result.passes()).toBe(true)
     })
 
-    test('isObject, fails with non-object value', async () => {
+    test('ObjectRule, fails with non-object value', async () => {
         const validator = Validator.make({
-            objectField: [new IsObject()]
+            objectField: [new ObjectRule()]
         })
 
         const result = await validator.validate({
@@ -31,7 +31,7 @@ describe('test validation', () => {
 
     test('required properties should pass', async () => {
         const validator = Validator.make({
-            data: [new IsObject(['name', 'age'])]
+            data: [new ObjectRule(['name', 'age'])]
         })
 
 
@@ -43,7 +43,7 @@ describe('test validation', () => {
     
     test('required properties should fail', async () => {
         const validator = Validator.make({
-            data: [new IsObject(['name', 'age', 'id'])]
+            data: [new ObjectRule(['name', 'age', 'id'])]
         })
 
         const result = await validator.validate({ 

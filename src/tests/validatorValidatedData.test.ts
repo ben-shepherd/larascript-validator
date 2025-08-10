@@ -1,10 +1,6 @@
-/* eslint-disable no-undef */
+ 
+import { ArrayRule, ObjectRule, RequiredRule, StringRule, Validator } from '@/validator';
 import { describe } from '@jest/globals';
-import ArrayRule from '@src/core/domains/validator/rules/ArrayRule';
-import IsObject from '@src/core/domains/validator/rules/ObjectRule';
-import RequiredRule from '@src/core/domains/validator/rules/RequiredRule';
-import StringRule from '@src/core/domains/validator/rules/StringRule';
-import Validator from '@src/core/domains/validator/service/Validator';
 
 describe('test validation', () => {
     test('validator returns validated data for simple validation', async () => {
@@ -24,7 +20,7 @@ describe('test validation', () => {
 
     test('validator returns validated data for nested objects', async () => {
         const validator = new Validator({
-            user: [new RequiredRule(), new IsObject()],
+            user: [new RequiredRule(), new ObjectRule()],
             'user.name': [new RequiredRule(), new StringRule()],
             'user.hobbies': [new RequiredRule(), new ArrayRule()]
         });
