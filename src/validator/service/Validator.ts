@@ -1,7 +1,7 @@
 import { DotNotationDataExtrator } from "@ben-shepherd/larascript-utils-bundle";
 import { ValidatorResult } from "../data";
 import { ValidatorException } from "../exceptions";
-import { IAdditionalRuleContext, IRule, IRuleContextCallback, IRulesObject, IValidator, IValidatorAttributes, IValidatorFn, IValidatorMessages, IValidatorResult } from "../interfaces";
+import { IRule, IRuleContext, IRulesObject, IValidator, IValidatorAttributes, IValidatorFn, IValidatorMessages, IValidatorResult } from "../interfaces";
 
 /**
  * Short hand for creating a new validator on the fly
@@ -14,7 +14,7 @@ export const validatorFn: IValidatorFn = (rules: IRulesObject, messages: IValida
  * The validator checks input data against defined rules and returns validation results including any errors.
  * It supports dot notation for nested data validation and custom error messages.
  */
-export class Validator implements IValidator, IAdditionalRuleContext {
+export class Validator implements IValidator {
 
     /**
      * Rules to validate against, mapping field paths to validation rules
@@ -40,7 +40,7 @@ export class Validator implements IValidator, IAdditionalRuleContext {
     /**
      * Callback to apply additional rule context
      */
-    protected ruleContextCallback?: IRuleContextCallback;
+    protected ruleContext?: IRuleContext;
 
     constructor(
         rules: IRulesObject,
@@ -58,8 +58,8 @@ export class Validator implements IValidator, IAdditionalRuleContext {
      * Define a callback to apply additional 
      * @param callback 
      */
-    setApplyRuleContextCallback(callback?: IRuleContextCallback): void {
-        this.ruleContextCallback = callback
+    setRuleContext(context?: IRuleContext): void {
+        this.ruleContext = context
     }
 
     /**
@@ -172,14 +172,12 @@ export class Validator implements IValidator, IAdditionalRuleContext {
         return ValidatorResult.passes();
     }
 
+    /**
+     * Applies rule context
+     */
     protected applyRuleContext(rule: IRule, path: string): IRule {
-        
-        if(typeof this.ruleContextCallback === 'function') {
-            rule = this.ruleContextCallback(rule)
-        }
-
+        rule.setContext({ ...this.applyRuleContext })
         rule.setAttribute(this.extractAttributeFromPath(path))
-
         return rule
     }
 

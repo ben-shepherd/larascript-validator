@@ -43,6 +43,11 @@ export abstract class AbstractRule<TOptions extends object = object> implements 
     protected otherRuleNames: string[] = []
 
     /**
+     * Additional context
+     */
+    protected context: Record<string, unknown> = {}
+
+    /**
      * Constructor for AbstractRule
      * 
      * @param additionalOptions - Additional options to be merged with the default options
@@ -52,6 +57,14 @@ export abstract class AbstractRule<TOptions extends object = object> implements 
             ...(this.options ?? {}),
             ...(additionalOptions ?? {})
         }
+    }
+
+    setContext(context: Record<string, unknown>): void {
+        this.context = context
+    }
+
+    getContext<T = unknown>(name: string): T | undefined {
+        return this.context?.[name] as T ?? undefined
     }
 
     /**

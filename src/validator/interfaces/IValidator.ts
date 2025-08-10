@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IRule, IRulesObject } from "./IRule"
+import { IRule, IRuleContext, IRulesObject } from "./IRule"
 import { IValidatorResult } from "./IValidatorResult"
 
 export type CustomValidatorConstructor = {
@@ -19,13 +19,11 @@ export type IValidatorErrors = Record<string, string[]>
 
 export type IValidatorFn = (rules: IRulesObject, messages?: IValidatorMessages) => IValidator
 
-export type IRuleContextCallback = (rule: IRule) => IRule;
-
-export interface IAdditionalRuleContext {
-    setApplyRuleContextCallback(callback?: IRuleContextCallback): void
+export interface ISetRuleContext {
+    setRuleContext(context?: IRuleContext): void
 }
 
-export interface IValidator<Attributes extends IValidatorAttributes = IValidatorAttributes> {
+export interface IValidator<Attributes extends IValidatorAttributes = IValidatorAttributes> extends ISetRuleContext {
     validate(data: Attributes, validator?: IValidator): Promise<IValidatorResult<Attributes>>
     passes(): boolean
     errors(): IValidatorErrors

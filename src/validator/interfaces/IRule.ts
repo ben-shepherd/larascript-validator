@@ -12,6 +12,7 @@ export interface IRuleError {
     [key: string]: string[]
 }
 
+export type IRuleContext = Record<string, unknown>
 
 export interface IRule {
     setDotNotationPath(field: string): this
@@ -28,6 +29,8 @@ export interface IRule {
     getError(): IRuleError
     getCustomError(): IRuleError | undefined
     getName(): string
+    setContext(context: IRuleContext): void;
+    getContext<T = unknown>(name: string): T | undefined;
 }
 
 

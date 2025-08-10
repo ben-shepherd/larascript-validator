@@ -1,6 +1,6 @@
 import { ValidatorResult } from "../data";
 import { ValidatorException } from "../exceptions";
-import { IRulesObject, IValidator, IValidatorAttributes, IValidatorMessages, IValidatorResult } from "../interfaces";
+import { IRuleContext, IRulesObject, IValidator, IValidatorAttributes, IValidatorMessages, IValidatorResult } from "../interfaces";
 import { Validator } from "../service";
 
 /**
@@ -17,6 +17,12 @@ export abstract class BaseCustomValidator<Attributes extends IValidatorAttribute
     
     protected result!: IValidatorResult<Attributes>
 
+    protected ruleContextCallback?: IRuleContext;
+
+    setRuleContext(callback?: IRuleContext): void {
+        this.ruleContextCallback = callback;
+    }
+
     /**
      * Validates the provided data against the defined rules.
      * 
@@ -32,6 +38,9 @@ export abstract class BaseCustomValidator<Attributes extends IValidatorAttribute
         if(typeof validator === 'undefined') {
             validator = Validator.make(this.rules, this.messages) as Validator
         }
+
+        // Apply additional rule context callback
+        validator.setRuleContext(this.ruleContextCallback)
         
         const validatorResult = await validator.validate(data) as IValidatorResult<Attributes>
 
