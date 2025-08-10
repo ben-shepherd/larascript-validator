@@ -1,10 +1,10 @@
 {
-  "name": "PLACEHOLDER",
+  "name": "@ben-shepherd/larascript-validator-bundle",
   "version": "1.0.0",
-  "description": "PLACEHOLDER DESCRIPTION",
+  "description": "Validator bundle for Larascript Framework",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ben-shepherd/PLACEHOLDER_REPOSITORY"
+    "url": "git+https://github.com/ben-shepherd/larascript-validator-bundle"
   },
   "license": "ISC",
   "author": "ben.shepherd@gmx.com",
@@ -53,5 +53,8 @@
   "validate-branch-name": {
     "pattern": "^(feat|fix|hotfix|release|test|experimental|refactor)/.+$",
     "errorMsg": "Branch name validation failed"
+  },
+  "dependencies": {
+    "@ben-shepherd/larascript-utils-bundle": "github:ben-shepherd/larascript-utils-bundle"
   }
 }
