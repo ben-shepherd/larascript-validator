@@ -14,8 +14,8 @@ class JsonRule extends AbstractRule implements IRule {
 
     try {
       JSON.parse(this.getAttributeData() as string);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
-       
       return false;
     }
 

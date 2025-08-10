@@ -1,4 +1,3 @@
- 
 import BooleanRule from "@/validator/rules/BooleanRule";
 import Validator from "@/validator/service/Validator";
 

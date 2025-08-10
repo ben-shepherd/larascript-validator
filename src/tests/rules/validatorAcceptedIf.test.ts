@@ -1,4 +1,3 @@
- 
 import AcceptedIfRule from "@/validator/rules/AcceptedIfRule";
 import Validator from "@/validator/service/Validator";
 import { describe } from "@jest/globals";

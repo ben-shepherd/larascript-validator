@@ -1,4 +1,3 @@
- 
 import NumericRule from "@/validator/rules/NumericRule";
 import Validator from "@/validator/service/Validator";
 import { describe } from "@jest/globals";

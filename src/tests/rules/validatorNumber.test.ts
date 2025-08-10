@@ -1,4 +1,3 @@
- 
 import IsNumber from "@/validator/rules/NumberRule";
 import Validator from "@/validator/service/Validator";
 import { describe } from "@jest/globals";

@@ -2,7 +2,7 @@ import { isUuid } from "@ben-shepherd/larascript-utils-bundle";
 import AbstractRule from "../abstract/AbstractRule";
 import { IRule, IRuleError } from "../interfaces/IRule";
 
-class UuidRule extends AbstractRule<{}> implements IRule {
+class UuidRule extends AbstractRule<object> implements IRule {
   protected name: string = "uuid";
 
   protected errorTemplate: string =

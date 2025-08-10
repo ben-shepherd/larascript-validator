@@ -1,4 +1,3 @@
- 
 import JsonRule from "@/validator/rules/JsonRule";
 import Validator from "@/validator/service/Validator";
 import { describe } from "@jest/globals";

@@ -1,4 +1,3 @@
- 
 import SizeRule from "@/validator/rules/SizeRule";
 import Validator from "@/validator/service/Validator";
 import { describe } from "@jest/globals";

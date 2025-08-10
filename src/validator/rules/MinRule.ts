@@ -63,7 +63,7 @@ class MinRule extends AbstractRule<TMinOptions> implements IRule {
 
   protected testArray(): boolean {
     if (Array.isArray(this.getAttributeData())) {
-      if ((this.getAttributeData() as any[]).length < this.options.min) {
+      if ((this.getAttributeData() as unknown[]).length < this.options.min) {
         this.errorTemplate = this.errorTemplateArray;
         return false;
       }

@@ -1,4 +1,3 @@
- 
 import EmailRule from "@/validator/rules/EmailRule";
 import Validator from "@/validator/service/Validator";
 import { describe } from "@jest/globals";

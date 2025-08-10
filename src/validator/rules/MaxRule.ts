@@ -56,7 +56,7 @@ class MaxRule extends AbstractRule<TMaxOptions> implements IRule {
 
   protected testArray(): boolean {
     if (Array.isArray(this.getAttributeData())) {
-      if ((this.getAttributeData() as any[]).length > this.options.max) {
+      if ((this.getAttributeData() as unknown[]).length > this.options.max) {
         this.errorTemplate = this.errorTemplateArray;
         return false;
       }

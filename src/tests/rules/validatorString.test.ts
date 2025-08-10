@@ -1,4 +1,3 @@
- 
 import RequiredRule from "@/validator/rules/RequiredRule";
 import StringRule from "@/validator/rules/StringRule";
 import Validator from "@/validator/service/Validator";

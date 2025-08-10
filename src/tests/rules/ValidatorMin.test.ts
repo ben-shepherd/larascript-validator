@@ -1,4 +1,3 @@
- 
 import MinRule from "@/validator/rules/MinRule";
 import Validator from "@/validator/service/Validator";
 import { describe } from "@jest/globals";

@@ -1,7 +1,7 @@
 import AbstractRule from "../abstract/AbstractRule";
 import { IRule, IRuleError } from "../interfaces/IRule";
 
-class NumericRule extends AbstractRule<{}> implements IRule {
+class NumericRule extends AbstractRule<object> implements IRule {
   protected name: string = "numeric";
 
   protected errorTemplate: string = "The :attribute field must be numeric.";

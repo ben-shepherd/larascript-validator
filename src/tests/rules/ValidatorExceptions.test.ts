@@ -1,4 +1,3 @@
- 
 import AbstractRule from "@/validator/abstract/AbstractRule";
 import { IRule } from "@/validator/interfaces/IRule";
 import Validator from "@/validator/service/Validator";
