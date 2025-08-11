@@ -14,7 +14,7 @@ A powerful, flexible validation library for the Larascript Framework with suppor
 ## Installation
 
 ```bash
-npm install @ben-shepherd/larascript-validator-bundle
+npm install ben-shepherd/larascript-validator-bundle
 ```
 
 ## Quick Start
