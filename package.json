@@ -1,10 +1,10 @@
 {
-  "name": "@ben-shepherd/larascript-validator-bundle",
+  "name": "@ben-shepherd/larascript-validator",
   "version": "1.0.1",
-  "description": "Validator bundle for Larascript Framework",
+  "description": "A powerful, flexible validation library for the Larascript Framework with support for custom rules, nested data validation, and comprehensive error handling.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ben-shepherd/larascript-validator-bundle"
+    "url": "git+https://github.com/ben-shepherd/larascript-validator"
   },
   "license": "ISC",
   "author": "ben.shepherd@gmx.com",

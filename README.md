@@ -1,4 +1,4 @@
-# Larascript Validator Bundle
+# Larascript Validator
 
 A powerful, flexible validation library for the Larascript Framework with support for custom rules, nested data validation, and comprehensive error handling.
 
@@ -14,13 +14,13 @@ A powerful, flexible validation library for the Larascript Framework with suppor
 ## Installation
 
 ```bash
-npm install ben-shepherd/larascript-validator-bundle
+npm install ben-shepherd/larascript-validator
 ```
 
 ## Quick Start
 
 ```typescript
-import { Validator, RequiredRule, StringRule, EmailRule } from '@ben-shepherd/larascript-validator-bundle';
+import { Validator, RequiredRule, StringRule, EmailRule } from '@ben-shepherd/larascript-validator';
 
 // Create a validator with rules
 const validator = Validator.make({
@@ -189,7 +189,7 @@ if (result.fails()) {
 Create custom validation rules by extending the `AbstractRule` class:
 
 ```typescript
-import { AbstractRule } from '@ben-shepherd/larascript-validator-bundle';
+import { AbstractRule } from '@ben-shepherd/larascript-validator';
 
 class CustomRule extends AbstractRule {
   async validate(value: unknown): Promise<boolean> {
